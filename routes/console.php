@@ -23,9 +23,10 @@ Artisan::command('tester', function(){
     /** @var \DefStudio\Telegraph\Models\TelegraphBot $bot */
     $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
     
-    dd($bot->registerCommands([
-        'actions' => 'Вывести список действий',
+    $bot->registerCommands([
+        'social' => 'Социальные сети',
+        'media' => 'Социальные сети 2',
         'hello' => 'Говорит "Привет"',
         'about' => 'Информация о нас'
-    ])->send());
+    ])->send();
 });

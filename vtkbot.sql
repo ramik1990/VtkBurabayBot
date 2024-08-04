@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 02 2024 г., 18:44
+-- Время создания: Авг 04 2024 г., 10:40
 -- Версия сервера: 8.0.24
 -- Версия PHP: 8.0.8
 
@@ -133,7 +133,8 @@ CREATE TABLE `telegraph_chats` (
 --
 
 INSERT INTO `telegraph_chats` (`id`, `chat_id`, `name`, `telegraph_bot_id`, `created_at`, `updated_at`) VALUES
-(1, '1078924098', '[private] ramilshudabaev', 1, '2024-08-02 08:43:03', '2024-08-02 08:43:03');
+(1, '1078924098', '[private] ramilshudabaev', 1, '2024-08-02 08:43:03', '2024-08-02 08:43:03'),
+(2, '5093754791', '[private] ', 1, '2024-08-03 05:41:16', '2024-08-03 05:41:16');
 
 -- --------------------------------------------------------
 
@@ -237,7 +238,7 @@ ALTER TABLE `telegraph_bots`
 -- AUTO_INCREMENT для таблицы `telegraph_chats`
 --
 ALTER TABLE `telegraph_chats`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
