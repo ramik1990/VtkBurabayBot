@@ -24,8 +24,8 @@ Artisan::command('tester', function(){
     $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
     
     $bot->registerCommands([
-        'social' => 'Социальные сети',
-        'hello' => 'Говорит "Привет"',
+        'social' => 'Наши социальные сети',
+        'documents' => 'Полезные документы',
         'about' => 'Информация о нас'
     ])->send();
 });

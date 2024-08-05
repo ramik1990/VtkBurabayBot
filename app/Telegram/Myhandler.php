@@ -11,33 +11,53 @@ use DefStudio\Telegraph\Keyboard\Button;
 use DefStudio\Telegraph\Keyboard\Keyboard;
 use DefStudio\Telegraph\Models\TelegraphChat;
 use Illuminate\Support\Stringable as SupportStringable;
+use App\Models\Article;
 use Stringable;
 
 class Myhandler extends WebhookHandler
 {
     //==============СОЦИАЛЬНЫЕ СЕТИ=====================
     public function social(): void {
-        Telegraph::chat($this->message->chat()->id())->message('Посетите наши социальные сети')->keyboard(Keyboard::make()->buttons([
+        Telegraph::chat($this->message->chat()->id())->message('Посетите наши социальные сети')->keyboard(Keyboard::make()->row([
             Button::make('🌏 Наш сайт')->url('Http://Vtk.edu.kz'),
-            Button::make('📹 Instagram')->url('https://www.instagram.com/zhtk.aqmoedu.kz/'),
-            Button::make('🤳 Facebook')->url('https://www.facebook.com/vtk.aqmoedu.kz')
+            Button::make('🤳 Instagram')->url('https://www.instagram.com/zhtk.aqmoedu.kz/')
+        ])->row([
+            Button::make('📹 YouTube')->url('https://www.youtube.com/channel/UCcGx42FdY6ALYyinmPf9ATw'),
+            Button::make('👀 Facebook')->url('https://www.facebook.com/vtk.aqmoedu.kz')
         ]))->send();
     }   
 
-    public function hello(): void {
-        $this->reply('*Привет!*');
+    //==============ДОКУМЕНТЫ=====================
+    public function documents(): void {
+        Telegraph::chat($this->message->chat()->id())->message('Документы')->keyboard(Keyboard::make()
+        ->row([
+            Button::make('🕗 Расписание занятий')->action('getSchedule'),
+            Button::make('🕗 Расписание звонков')->action('getBell')
+        ])
+        ->row([
+            Button::make('🕗 Расписание занятий')->action('getSchedule'),
+            Button::make('🕗 Расписание занятий')->action('getSchedule')
+        ])
+        )->send();
     }    
 
+    //==============ИНФОРМАЦИЯ О НАС=====================
     public function about(): void {
-        $this->reply('Информация о нашем колледже!');
+        $collegeHistory = Article::find(1);
+        Telegraph::chat($this->message->chat()->id())->html('<b>'.$collegeHistory->title.'</b>')->send(); 
+        Telegraph::chat($this->message->chat()->id())->photo('images/articles//collegeHistory.jpg')->send(); 
+        Telegraph::chat($this->message->chat()->id())->html($collegeHistory->text)->send(); 
     }
     
+    //==============НЕРАСПОЗНАНЫЕ КОМАНДЫ=====================
     protected function handleUnknownCommand(SupportStringable $text): void {
         if ($text->value() === '/start') {
             /** @var TelegraphChat $chat */
-            $chat = TelegraphChat::find(1);
-            $chat->photo('images/logo.jpg')->send();    
-            $this->reply('Добро пожаловать в наш телеграм бот!) ');
+            /*$chat = TelegraphChat::find(1);
+            $chat->photo('images/logo.jpg')->send();*/   
+            Telegraph::chat($this->message->chat()->id())->photo('images/logo.jpg')->send(); 
+            Telegraph::chat($this->message->chat()->id())->message('<b>ГККП "Высший технический колледж, город Щучинск, Бурабайский район" при управлении образования Акмолинской области</b>
+            Добро пожаловать в наш Телеграм Бот!')->send(); 
         } else {
             $this->reply('Неизвестная команда');
         }
@@ -46,7 +66,6 @@ class Myhandler extends WebhookHandler
     //==============ПОЛУЧЕНИЕ СООБЩЕНИЯ ТЕКСТОМ=====================
     protected function handleChatMessage(SupportStringable $text): void
         {
-            //$this->reply(json_encode($this->message->toArray(), JSON_UNESCAPED_UNICODE));
             if(($text->value() === 'Антон') || ($text->value() === 'антон')) {
                 $this->reply('Здарова заебал!=)');
             }
