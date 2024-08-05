@@ -25,7 +25,6 @@ Artisan::command('tester', function(){
     
     $bot->registerCommands([
         'social' => 'Социальные сети',
-        'media' => 'Социальные сети 2',
         'hello' => 'Говорит "Привет"',
         'about' => 'Информация о нас'
     ])->send();
