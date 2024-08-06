@@ -12,6 +12,7 @@ use DefStudio\Telegraph\Keyboard\Keyboard;
 use DefStudio\Telegraph\Models\TelegraphChat;
 use Illuminate\Support\Stringable as SupportStringable;
 use App\Models\Article;
+use Faker\Core\Number;
 use Stringable;
 
 class Myhandler extends WebhookHandler
@@ -28,18 +29,40 @@ class Myhandler extends WebhookHandler
     }   
 
     //==============ДОКУМЕНТЫ=====================
-    public function documents(): void {
-        Telegraph::chat($this->message->chat()->id())->message('Документы')->keyboard(Keyboard::make()
-        ->row([
-            Button::make('🕗 Расписание занятий')->action('getSchedule'),
-            Button::make('🕗 Расписание звонков')->action('getBell')
-        ])
-        ->row([
-            Button::make('🕗 Расписание занятий')->action('getSchedule'),
-            Button::make('🕗 Расписание занятий')->action('getSchedule')
-        ])
-        )->send();
+    public function documents(): void {        
+        Telegraph::chat($this->message->chat()->id())->message('Документы')->keyboard(Keyboard::make()->buttons([
+            Button::make('✍ Брошюра КАЗ')->action('getDocument')->param('id', '1')->param('chat', $this->message->chat()->id()),
+            Button::make('✍ Брошюра РУС')->action('getDocument')->param('id', '2')->param('chat', $this->message->chat()->id()),
+            Button::make('✍ Инструкция. Работа с журналом')->action('getDocument')->param('id', '3')->param('chat', $this->message->chat()->id()),
+            Button::make('✍ Инструкция. Работа с КТП')->action('getDocument')->param('id', '4')->param('chat', $this->message->chat()->id()),
+            Button::make('✍ Рекомендации. Написание научных статей')->action('getDocument')->param('id', '5')->param('chat', $this->message->chat()->id()),
+            Button::make('✍ Инструкция. Работа с Discord')->action('getDocument')->param('id', '6')->param('chat', $this->message->chat()->id())
+        ]))->send();
     }    
+    public function getDocument(): void {
+        $id = $this->data->get('id');
+        $chat = $this->data->get('chat');
+        switch ($id) {
+            case '1':
+                Telegraph::chat($chat)->message('Брошюра. Казахский вариант')->document('documents/pdf/broshura_kaz.pdf')->send();
+                break;
+            case '2':
+                Telegraph::chat($chat)->message('Брошюра. Русский вариант')->document('documents/pdf/broshura_rus.pdf')->send();
+                break;
+            case '3':
+                Telegraph::chat($chat)->message('Инструкция. Работа с журналом')->document('documents/pdf/inst_zhurnal.pdf')->send();
+                break;
+            case '4':
+                Telegraph::chat($chat)->message('Инструкция. Работа с КТП')->document('documents/pdf/instr_ktp.pdf')->send();
+                break;
+            case '5':
+                Telegraph::chat($chat)->message('Рекомендации. Написание научных статей')->document('documents/pdf/napisanie_stat.pdf')->send();
+                break;
+            case '6':
+                Telegraph::chat($chat)->message('Инструкция. Работа с Discord')->document('documents/word/instr_discord.doc')->send();
+                break;
+        }
+    }
 
     //==============ИНФОРМАЦИЯ О НАС=====================
     public function about(): void {
@@ -66,9 +89,7 @@ class Myhandler extends WebhookHandler
     //==============ПОЛУЧЕНИЕ СООБЩЕНИЯ ТЕКСТОМ=====================
     protected function handleChatMessage(SupportStringable $text): void
         {
-            if(($text->value() === 'Антон') || ($text->value() === 'антон')) {
-                $this->reply('Здарова заебал!=)');
-            }
+           $this->reply('Бот находится в стадии разработки. Пока можете воспользоваться командами, которые находятся в меню бота');
         }
 }
 

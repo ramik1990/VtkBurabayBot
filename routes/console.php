@@ -26,6 +26,7 @@ Artisan::command('tester', function(){
     $bot->registerCommands([
         'social' => 'Наши социальные сети',
         'documents' => 'Полезные документы',
-        'about' => 'Информация о нас'
+        'contacts' => 'Контакты',
+        'about' => 'О нас'
     ])->send();
 });
